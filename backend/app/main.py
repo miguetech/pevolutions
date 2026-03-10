@@ -1,12 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
-from .routers import auth
+
+# Importar módulos
+from .modules.auth import router as auth_router
+from .modules.players import router as players_router
+from .modules.account import router as account_router
+from .modules.events import router as events_router
+from .modules.guilds import router as guilds_router
+from .modules.shop import router as shop_router
 
 app = FastAPI(
     title="PEvolutions API",
-    description="Backend API for PEvolutions Pokemon Game",
-    version="1.0.0"
+    description="Backend API for PEvolutions Pokemon Game - Modular Monolith",
+    version="2.0.0"
 )
 
 app.add_middleware(
@@ -17,7 +24,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router)
+# Incluir routers de módulos
+app.include_router(auth_router)
+app.include_router(players_router)
+app.include_router(account_router)
+app.include_router(events_router)
+app.include_router(guilds_router)
+app.include_router(shop_router)
+
+@app.get("/")
+def root():
+    return {"message": "PEvolutions API is running", "version": "2.0.0"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
 
 @app.get("/")
 def root():

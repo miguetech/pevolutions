@@ -1,0 +1,209 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "PEvolutions API",
+  "collectionId": "pevolutions-api",
+  "dateExported": "2026-03-10",
+  "version": "1.0",
+  "folders": [
+    {
+      "name": "Auth",
+      "requests": [
+        {
+          "name": "Register",
+          "method": "POST",
+          "url": "{{base_url}}/api/auth/register",
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"name\": \"testuser\",\n  \"password\": \"test123\",\n  \"email\": \"test@example.com\"\n}"
+          }
+        },
+        {
+          "name": "Login",
+          "method": "POST",
+          "url": "{{base_url}}/api/auth/login",
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"name\": \"testuser\",\n  \"password\": \"test123\"\n}"
+          },
+          "tests": [
+            {
+              "type": "set-env-var",
+              "custom": "json.access_token",
+              "action": "setto",
+              "value": "{{token}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Players",
+      "requests": [
+        {
+          "name": "Get My Players",
+          "method": "GET",
+          "url": "{{base_url}}/api/players/",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ]
+        },
+        {
+          "name": "Create Player",
+          "method": "POST",
+          "url": "{{base_url}}/api/players/",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"name\": \"MyPlayer\",\n  \"sex\": 0\n}"
+          }
+        },
+        {
+          "name": "Get Player",
+          "method": "GET",
+          "url": "{{base_url}}/api/players/MyPlayer"
+        },
+        {
+          "name": "Update Player",
+          "method": "PUT",
+          "url": "{{base_url}}/api/players/MyPlayer",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"level\": 10\n}"
+          }
+        },
+        {
+          "name": "Delete Player",
+          "method": "DELETE",
+          "url": "{{base_url}}/api/players/MyPlayer",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ]
+        },
+        {
+          "name": "Player Stats",
+          "method": "GET",
+          "url": "{{base_url}}/api/players/MyPlayer/stats"
+        },
+        {
+          "name": "Online Players",
+          "method": "GET",
+          "url": "{{base_url}}/api/players/online?limit=10"
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "requests": [
+        {
+          "name": "Get Stats",
+          "method": "GET",
+          "url": "{{base_url}}/api/account/stats",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ]
+        },
+        {
+          "name": "Change Password",
+          "method": "PUT",
+          "url": "{{base_url}}/api/account/password",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"current_password\": \"test123\",\n  \"new_password\": \"newpass456\"\n}"
+          }
+        },
+        {
+          "name": "Update Settings",
+          "method": "PUT",
+          "url": "{{base_url}}/api/account/settings",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"email\": \"newemail@example.com\",\n  \"flag\": \"US\"\n}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Community",
+      "requests": [
+        {
+          "name": "Get Events",
+          "method": "GET",
+          "url": "{{base_url}}/api/events"
+        },
+        {
+          "name": "Get Guilds",
+          "method": "GET",
+          "url": "{{base_url}}/api/guilds"
+        }
+      ]
+    },
+    {
+      "name": "Shop",
+      "requests": [
+        {
+          "name": "Get Packages",
+          "method": "GET",
+          "url": "{{base_url}}/api/shop/packages"
+        },
+        {
+          "name": "Get Premium Status",
+          "method": "GET",
+          "url": "{{base_url}}/api/shop/premium",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{token}}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "name": "Local",
+      "variables": [
+        {
+          "name": "base_url",
+          "value": "http://localhost:8000"
+        },
+        {
+          "name": "token",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

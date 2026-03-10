@@ -1,0 +1,153 @@
+### PEvolutions API - REST Client Tests
+### Instalar extensión: REST Client (humao.rest-client)
+### Uso: Click en "Send Request" sobre cada petición
+
+@baseUrl = http://localhost:8000
+@token = 
+
+### ============================================
+### 1. HEALTH CHECK
+### ============================================
+
+GET {{baseUrl}}/health
+
+### ============================================
+### 2. AUTH - Register
+### ============================================
+
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "testuser",
+  "password": "test123",
+  "email": "test@example.com"
+}
+
+### ============================================
+### 3. AUTH - Login (Copiar token de respuesta)
+### ============================================
+
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "name": "testuser",
+  "password": "test123"
+}
+
+### ============================================
+### 4. PLAYERS - Get My Players
+### ============================================
+
+GET {{baseUrl}}/api/players/
+Authorization: Bearer {{token}}
+
+### ============================================
+### 5. PLAYERS - Create Player
+### ============================================
+
+POST {{baseUrl}}/api/players/
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "MyPlayer",
+  "sex": 0
+}
+
+### ============================================
+### 6. PLAYERS - Get Player
+### ============================================
+
+GET {{baseUrl}}/api/players/MyPlayer
+
+### ============================================
+### 7. PLAYERS - Update Player
+### ============================================
+
+PUT {{baseUrl}}/api/players/MyPlayer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "level": 10,
+  "health": 200
+}
+
+### ============================================
+### 8. PLAYERS - Delete Player
+### ============================================
+
+DELETE {{baseUrl}}/api/players/MyPlayer
+Authorization: Bearer {{token}}
+
+### ============================================
+### 9. PLAYERS - Player Stats
+### ============================================
+
+GET {{baseUrl}}/api/players/MyPlayer/stats
+
+### ============================================
+### 10. PLAYERS - Online Players
+### ============================================
+
+GET {{baseUrl}}/api/players/online?limit=10&sort_by=level
+
+### ============================================
+### 11. ACCOUNT - Get Stats
+### ============================================
+
+GET {{baseUrl}}/api/account/stats
+Authorization: Bearer {{token}}
+
+### ============================================
+### 12. ACCOUNT - Change Password
+### ============================================
+
+PUT {{baseUrl}}/api/account/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "current_password": "test123",
+  "new_password": "newpass456"
+}
+
+### ============================================
+### 13. ACCOUNT - Update Settings
+### ============================================
+
+PUT {{baseUrl}}/api/account/settings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "newemail@example.com",
+  "flag": "US"
+}
+
+### ============================================
+### 14. EVENTS - Get Events
+### ============================================
+
+GET {{baseUrl}}/api/events?limit=10
+
+### ============================================
+### 15. GUILDS - Get Guilds
+### ============================================
+
+GET {{baseUrl}}/api/guilds?limit=10
+
+### ============================================
+### 16. SHOP - Get Packages
+### ============================================
+
+GET {{baseUrl}}/api/shop/packages
+
+### ============================================
+### 17. SHOP - Get Premium Status
+### ============================================
+
+GET {{baseUrl}}/api/shop/premium
+Authorization: Bearer {{token}}
