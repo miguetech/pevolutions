@@ -34,13 +34,10 @@ const Account: React.FC<Props> = ({ lang }) => {
     window.location.href = l('/');
   };
 
-  // Don't render until we have user data to avoid hydration mismatch
-  if (!userData) return null;
-
   const user = {
-    username: userData.name || 'User',
-    email: userData.email || '',
-    country: userData.flag || '',
+    username: userData?.name || 'User',
+    email: userData?.email || '',
+    country: userData?.flag || '',
   };
 
   const menuItems = [
