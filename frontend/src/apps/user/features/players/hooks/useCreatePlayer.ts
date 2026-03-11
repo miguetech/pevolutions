@@ -6,15 +6,19 @@ export function useCreatePlayer() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: playersAPI.createPlayer,
+    mutationFn: async (data: { name: string; sex: number }) => {
+      try {
+        return await playersAPI.createPlayer(data);
+      } catch (error) {
+        if (error instanceof HTTPError) {
+          const body = await error.response.json();
+          throw new Error(body.detail || 'Failed to create player');
+        }
+        throw error;
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['players', 'list'] });
-    },
-    onError: async (error) => {
-      if (error instanceof HTTPError) {
-        const body = await error.response.json();
-        throw new Error(body.detail || 'Failed to create player');
-      }
     },
   });
 }
