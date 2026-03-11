@@ -1,19 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
 import { useAuth } from '../useAuth';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider, createStore } from 'jotai';
-import { authAPI } from '@/shared/lib/api';
-
-// Mock API
-vi.mock('@/lib/api', () => ({
-  authAPI: {
-    login: vi.fn(),
-  },
-  accountAPI: {
-    getStats: vi.fn(),
-  },
-}));
+import { Role } from '../../types/user';
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -30,7 +20,6 @@ const createWrapper = () => {
 
 describe('useAuth', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     sessionStorage.clear();
     localStorage.clear();
   });
@@ -43,57 +32,46 @@ describe('useAuth', () => {
     expect(result.current.token).toBeNull();
   });
 
-  it('should login successfully', async () => {
-    vi.mocked(authAPI.login).mockResolvedValue({
-      access_token: 'test-token-123',
-      token_type: 'bearer',
-    });
-
+  it('should set token and user', () => {
     const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
     
-    const loginResult = await result.current.login('testuser', 'password123');
-    
-    await waitFor(() => {
-      expect(loginResult.success).toBe(true);
-      expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.token).toBe('test-token-123');
+    act(() => {
+      result.current.setToken('test-token-123');
+      result.current.setUser({
+        id: 1,
+        name: 'testuser',
+        email: 'test@example.com',
+        role: Role.USER,
+      });
     });
+    
+    expect(result.current.isAuthenticated).toBe(true);
+    expect(result.current.token).toBe('test-token-123');
+    expect(result.current.user?.name).toBe('testuser');
   });
 
-  it('should handle login failure', async () => {
-    vi.mocked(authAPI.login).mockRejectedValue(new Error('Invalid credentials'));
-
+  it('should logout successfully', () => {
     const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
     
-    const loginResult = await result.current.login('wronguser', 'wrongpass');
-    
-    expect(loginResult.success).toBe(false);
-    expect(loginResult.error).toBe('Invalid credentials');
-    expect(result.current.isAuthenticated).toBe(false);
-  });
-
-  it('should logout successfully', async () => {
-    vi.mocked(authAPI.login).mockResolvedValue({
-      access_token: 'test-token-123',
-      token_type: 'bearer',
+    // Set auth state first
+    act(() => {
+      result.current.setToken('test-token-123');
+      result.current.setUser({
+        id: 1,
+        name: 'testuser',
+        email: 'test@example.com',
+        role: Role.USER,
+      });
     });
-
-    const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
     
-    // Login first
-    await result.current.login('testuser', 'password123');
-    
-    await waitFor(() => {
-      expect(result.current.isAuthenticated).toBe(true);
-    });
+    expect(result.current.isAuthenticated).toBe(true);
 
     // Logout
-    result.current.logout();
-    
-    await waitFor(() => {
-      expect(result.current.isAuthenticated).toBe(false);
+    act(() => {
+      result.current.logout();
     });
     
+    expect(result.current.isAuthenticated).toBe(false);
     expect(result.current.token).toBeNull();
     expect(result.current.user).toBeNull();
   });

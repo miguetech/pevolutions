@@ -13,10 +13,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const { login } = useAuth();
+
+  const registerMutation = useMutation({
+    mutationFn: () => authAPI.register({ name, email, password }),
+    onSuccess: () => {
+      onSuccess?.();
+    },
+  });
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -47,28 +50,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage('');
     
     if (!validate()) return;
     
-    setIsLoading(true);
-    
-    try {
-      await authAPI.register(name, password, email);
-      
-      // Auto-login after registration
-      const result = await login(name, password);
-      
-      if (result.success) {
-        onSuccess?.();
-      } else {
-        setErrorMessage('Registration successful but login failed');
-      }
-    } catch (error: any) {
-      setErrorMessage(error.message || 'Registration failed');
-    } finally {
-      setIsLoading(false);
-    }
+    registerMutation.mutate();
   };
 
   return (
@@ -137,16 +122,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         )}
       </div>
 
-      {errorMessage && (
-        <p className="text-red-400 text-sm">{errorMessage}</p>
+      {registerMutation.error && (
+        <p className="text-red-400 text-sm">Registration failed</p>
       )}
 
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={registerMutation.isPending}
         className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 rounded text-white font-medium"
       >
-        {isLoading ? 'Loading...' : 'Register'}
+        {registerMutation.isPending ? 'Loading...' : 'Register'}
       </button>
     </form>
   );

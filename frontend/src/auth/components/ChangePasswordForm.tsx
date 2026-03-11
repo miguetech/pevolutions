@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { accountAPI } from '@/shared/lib/api';
 
 interface ChangePasswordFormProps {
@@ -10,8 +11,16 @@ export function ChangePasswordForm({ onSuccess }: ChangePasswordFormProps) {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
+  const changePasswordMutation = useMutation({
+    mutationFn: () => accountAPI.changePassword(currentPassword, newPassword),
+    onSuccess: () => {
+      onSuccess?.();
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    },
+  });
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -36,23 +45,10 @@ export function ChangePasswordForm({ onSuccess }: ChangePasswordFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage('');
     
     if (!validate()) return;
     
-    setIsLoading(true);
-    
-    try {
-      await accountAPI.changePassword(currentPassword, newPassword);
-      onSuccess?.();
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-    } catch (error: any) {
-      setErrorMessage(error.message || 'Failed to change password');
-    } finally {
-      setIsLoading(false);
-    }
+    changePasswordMutation.mutate();
   };
 
   return (
@@ -108,16 +104,16 @@ export function ChangePasswordForm({ onSuccess }: ChangePasswordFormProps) {
         )}
       </div>
 
-      {errorMessage && (
-        <p className="text-red-400 text-sm">{errorMessage}</p>
+      {changePasswordMutation.error && (
+        <p className="text-red-400 text-sm">Failed to change password</p>
       )}
 
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={changePasswordMutation.isPending}
         className="w-full py-4 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all disabled:opacity-50"
       >
-        {isLoading ? 'Saving...' : 'Save Changes'}
+        {changePasswordMutation.isPending ? 'Saving...' : 'Save Changes'}
       </button>
     </form>
   );
