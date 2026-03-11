@@ -2,10 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import { LoginFormWithProvider } from '../components/LoginFormWithProvider';
 import { NavbarWithProvider } from '../components/NavbarWithProvider';
-import { getTranslations } from '@/i18n/utils';
+import { ui } from '@/i18n/ui';
 
 const lang = (Astro.currentLocale || 'en') as 'en' | 'es' | 'pt';
-const t = getTranslations(lang);
+const t = (key: string) => ui[lang][key] || key;
 ---
 
 <Layout title={`${t('nav.login')} - PEvolutions`}>
