@@ -19,8 +19,6 @@ const Account: React.FC<Props> = ({ lang }) => {
   const token = useAtomValue(tokenAtom);
   const userData = useAtomValue(userAtom);
   const { logout } = useAuth();
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const l = useLocalizedPath(lang);
   const t = useTranslations(lang);
@@ -28,24 +26,21 @@ const Account: React.FC<Props> = ({ lang }) => {
   useEffect(() => {
     if (!token) {
       window.location.href = l('/login');
-    } else {
-      // Convertir userData de Jotai al formato esperado por el componente
-      setUser({
-        username: userData?.name || 'User',
-        email: userData?.email || '',
-        country: '',
-      });
-      setLoading(false);
     }
-  }, [token, userData, l]);
+  }, [token, l]);
 
   const handleLogout = () => {
     logout();
     window.location.href = l('/');
   };
 
-  if (loading) return null;
-  if (!user) return null;
+  if (!token || !userData) return null;
+
+  const user = {
+    username: userData.name || 'User',
+    email: userData.email || '',
+    country: userData.flag || '',
+  };
 
   const menuItems = [
     { id: 'dashboard', label: t('account.dashboard'), icon: '👤' },

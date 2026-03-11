@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '@/auth/stores/authAtoms';
 import { useUpdateSettings } from '../hooks/useUpdateSettings';
@@ -6,16 +6,9 @@ import { CountrySelector } from '@/shared/components/navigation/CountrySelector'
 
 export const SettingsForm: React.FC = () => {
   const user = useAtomValue(userAtom);
-  const [email, setEmail] = useState('');
-  const [flag, setFlag] = useState('');
+  const [email, setEmail] = useState(user?.email || '');
+  const [flag, setFlag] = useState(user?.flag || '');
   const { mutate, isPending, isError, error, isSuccess } = useUpdateSettings();
-
-  useEffect(() => {
-    if (user) {
-      setEmail(user.email || '');
-      setFlag(user.flag || '');
-    }
-  }, [user]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
