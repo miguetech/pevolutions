@@ -1,0 +1,12 @@
+---
+import OnlinePlayersPage from '../online-players.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt' } },
+  ];
+}
+---
+
+<OnlinePlayersPage />

@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar';
+import DownloadsComponent from '../components/Downloads';
+import Footer from '../components/Footer';
+import { ServerInfo, RequirementsCard } from '../components/Sidebar';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<Layout title="Downloads - PEvolutions">
+	<Navbar client:load lang={lang as 'en' | 'es' | 'pt'} />
+	
+	<main class="max-w-7xl mx-auto px-6 py-12">
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+			<!-- Right Column: Sidebar (First on mobile) -->
+			<aside class="lg:col-span-4 lg:order-2 flex flex-col gap-y-10">
+				<div><ServerInfo client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
+				<div><RequirementsCard client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
+			</aside>
+
+			<!-- Left Column: Downloads -->
+			<div class="lg:col-span-8 lg:order-1 space-y-8">
+				<DownloadsComponent client:visible lang={lang as 'en' | 'es' | 'pt'} />
+			</div>
+		</div>
+	</main>
+
+	<Footer client:visible />
+</Layout>

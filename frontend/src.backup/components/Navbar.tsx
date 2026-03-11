@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useAtomValue } from 'jotai';
+import { tokenAtom } from '@/stores/authAtoms';
 import { useTranslations, useLocalizedPath } from '../i18n/utils';
 import LanguagePicker from './LanguagePicker';
 
@@ -10,18 +12,17 @@ const Navbar: React.FC<Props> = ({ lang }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token = useAtomValue(tokenAtom);
+  const isLoggedIn = !!token;
 
   const t = useTranslations(lang);
   const l = useLocalizedPath(lang);
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
-    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
 
     const handleNavigation = () => {
       setCurrentPath(window.location.pathname);
-      setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
     };
 
     document.addEventListener('astro:after-navigation', handleNavigation);

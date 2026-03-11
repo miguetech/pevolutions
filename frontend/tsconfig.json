@@ -9,6 +9,13 @@
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/auth/*": ["./src/auth/*"],
+      "@/apps/*": ["./src/apps/*"],
+      "@/shared/*": ["./src/shared/*"]
+    }
   }
 }

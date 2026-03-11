@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Debug - Auth">
+	<main class="min-h-screen bg-gray-900 text-white p-8">
+		<div class="max-w-4xl mx-auto">
+			<h1 class="text-4xl font-bold mb-8">🔍 Debug Auth</h1>
+			
+			<div id="debug" class="bg-gray-800 rounded-lg p-6 space-y-4">
+				<p>Loading...</p>
+			</div>
+		</div>
+	</main>
+
+	<script>
+		const debugDiv = document.getElementById('debug');
+		
+		const token = localStorage.getItem('token');
+		const cleanToken = token ? token.replace(/^"(.*)"$/, '$1') : null;
+		
+		debugDiv.innerHTML = `
+			<div class="space-y-4">
+				<div>
+					<h3 class="text-xl font-bold mb-2">LocalStorage Token:</h3>
+					<pre class="bg-gray-900 p-4 rounded overflow-x-auto">${token || 'null'}</pre>
+				</div>
+				
+				<div>
+					<h3 class="text-xl font-bold mb-2">Clean Token:</h3>
+					<pre class="bg-gray-900 p-4 rounded overflow-x-auto">${cleanToken || 'null'}</pre>
+				</div>
+				
+				<div>
+					<h3 class="text-xl font-bold mb-2">Test API Call:</h3>
+					<button id="testBtn" class="bg-blue-600 px-4 py-2 rounded">Test /api/account/me</button>
+					<pre id="result" class="bg-gray-900 p-4 rounded mt-2 overflow-x-auto">Click button to test</pre>
+				</div>
+			</div>
+		`;
+		
+		document.getElementById('testBtn').addEventListener('click', async () => {
+			const resultDiv = document.getElementById('result');
+			resultDiv.textContent = 'Loading...';
+			
+			try {
+				const response = await fetch('http://localhost:8000/api/account/me', {
+					headers: {
+						'Authorization': `Bearer ${cleanToken}`
+					}
+				});
+				
+				const data = await response.json();
+				resultDiv.textContent = JSON.stringify(data, null, 2);
+			} catch (error) {
+				resultDiv.textContent = `Error: ${error.message}`;
+			}
+		});
+	</script>
+</Layout>

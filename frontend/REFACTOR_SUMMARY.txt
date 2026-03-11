@@ -1,0 +1,169 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   📚 TDD DE REFACTORIZACIÓN - RESUMEN                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+✅ ARCHIVOS CREADOS:
+
+📄 REFACTOR_README.md (2.7 KB)
+   └─ Punto de entrada principal - Empieza aquí
+
+📄 REFACTOR_TDD.md (14 KB)
+   └─ Plan detallado completo con todas las fases
+
+📄 REFACTOR_QUICKSTART.md (6.6 KB)
+   └─ Guía paso a paso con comandos específicos
+
+📄 REFACTOR_CHECKLIST.md (2.3 KB)
+   └─ Checklist compacto para seguimiento
+
+📄 REFACTOR_EXAMPLES.md (8.9 KB)
+   └─ Ejemplos de código para implementación
+
+🔧 refactor-helper.sh (6.6 KB)
+   └─ Script de automatización
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 INICIO RÁPIDO:
+
+1. Lee REFACTOR_README.md
+2. Ejecuta: ./refactor-helper.sh fase1
+3. Sigue REFACTOR_QUICKSTART.md
+4. Marca progreso en REFACTOR_CHECKLIST.md
+5. Consulta REFACTOR_EXAMPLES.md cuando necesites código
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📊 ARQUITECTURA FINAL:
+
+src/
+├── apps/
+│   ├── public/          # 🌐 App pública (sin auth)
+│   │   ├── features/
+│   │   │   ├── home/
+│   │   │   ├── downloads/
+│   │   │   ├── community/
+│   │   │   └── support/
+│   │   └── layouts/
+│   │
+│   ├── user/            # 👤 App de usuario autenticado
+│   │   ├── features/
+│   │   │   ├── account/
+│   │   │   ├── players/
+│   │   │   └── profile/
+│   │   └── layouts/
+│   │
+│   └── admin/           # 👨‍💼 App de administración
+│       ├── features/
+│       │   ├── dashboard/
+│       │   ├── users/
+│       │   ├── players/
+│       │   ├── logs/
+│       │   └── settings/
+│       └── layouts/
+│
+├── auth/                # 🔐 Dominio de autenticación (AISLADO)
+│   ├── components/      # LoginForm, RegisterForm, ProtectedRoute
+│   ├── hooks/           # useAuth, useLogin, usePermissions
+│   ├── stores/          # authAtoms, sessionAtoms
+│   ├── api/             # authAPI
+│   ├── types/           # User, Role, AuthResponse
+│   ├── utils/           # rbac, permissions, tokenManager
+│   └── layouts/         # AuthLayout
+│
+├── shared/              # 🔧 Código compartido
+│   ├── components/
+│   │   ├── ui/          # Button, Input, Modal, Card
+│   │   ├── forms/       # FormField, FormError
+│   │   ├── navigation/  # Navbar, Footer, Sidebar
+│   │   └── feedback/    # Toast, ErrorBoundary
+│   ├── hooks/           # useToast, useLocalStorage
+│   ├── stores/          # uiAtoms, notificationAtoms
+│   ├── lib/             # api, queryClient
+│   ├── types/           # player, api, common
+│   └── utils/           # formatters, validators
+│
+└── pages/               # 📄 Páginas de Astro
+    ├── index.astro
+    ├── login.astro
+    ├── account/
+    └── admin/
+
+═══════════════════════════════════════════════════════════════════════════════
+
+⏱️  TIEMPO ESTIMADO: 8-10 horas
+
+Fase 1: Setup                    30 min
+Fase 2: Auth                     1 hora
+Fase 3: Shared                   1 hora
+Fase 4: Public                   45 min
+Fase 5: User                     1 hora
+Fase 6: Admin                    1.5 horas
+Fase 7: Protección               45 min
+Fase 8: Limpieza                 30 min
+Fase 9: Testing                  1 hora
+Fase 10: Deploy                  30 min
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 BENEFICIOS:
+
+✅ Escalabilidad - Fácil agregar nuevos roles
+✅ Mantenibilidad - Código organizado por dominio
+✅ Separación clara - Auth completamente aislado
+✅ Reutilización - Componentes compartidos centralizados
+✅ Seguridad - Protección de rutas por rol
+✅ Testing - Cada dominio se testea independientemente
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📝 CONVENCIONES DE IMPORTS:
+
+// Auth
+import { useAuth } from '@/auth/hooks/useAuth';
+import { LoginForm } from '@/auth/components/LoginForm';
+
+// User features
+import { Account } from '@/apps/user/features/account/Account';
+
+// Admin features
+import { Dashboard } from '@/apps/admin/features/dashboard/Dashboard';
+
+// Shared
+import { Button } from '@/shared/components/ui/Button';
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔒 SISTEMA RBAC (Role-Based Access Control):
+
+Roles:
+  - USER          → Acceso a /account/*
+  - ADMIN         → Acceso a /admin/* + /account/*
+  - SUPER_ADMIN   → Acceso total
+
+Permisos:
+  - account:read, account:update
+  - players:read, players:create, players:update, players:delete
+  - users:read, users:update, users:delete
+  - logs:read
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📞 COMANDOS ÚTILES:
+
+./refactor-helper.sh fase1    # Crear estructura
+./refactor-helper.sh fase2    # Crear archivos auth base
+./refactor-helper.sh test     # Ejecutar tests
+./refactor-helper.sh build    # Build de producción
+./refactor-helper.sh clean    # Limpiar archivos antiguos
+
+npm run test                  # Tests
+npm run build                 # Build
+npm run dev                   # Desarrollo
+npm run preview               # Preview de producción
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ ¡Listo para empezar! Lee REFACTOR_README.md para comenzar.
+
+═══════════════════════════════════════════════════════════════════════════════

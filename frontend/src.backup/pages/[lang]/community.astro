@@ -1,0 +1,12 @@
+---
+import CommunityPage from '../community.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt' } },
+  ];
+}
+---
+
+<CommunityPage />

@@ -1,0 +1,12 @@
+---
+import SupportPage from '../support.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt' } },
+  ];
+}
+---
+
+<SupportPage />

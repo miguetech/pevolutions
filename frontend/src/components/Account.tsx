@@ -1,4 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useAtomValue } from 'jotai';
+import { tokenAtom, userAtom } from '@/auth/stores/authAtoms';
+import { useAuth } from '@/auth/hooks/useAuth';
 import { useLocalizedPath, useTranslations } from '../i18n/utils';
 
 interface Props {
@@ -8,6 +11,9 @@ interface Props {
 type Tab = 'dashboard' | 'create-char' | 'change-pwd' | 'settings' | 'donations';
 
 const Account: React.FC<Props> = ({ lang }) => {
+  const token = useAtomValue(tokenAtom);
+  const userData = useAtomValue(userAtom);
+  const { logout } = useAuth();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
@@ -15,19 +21,21 @@ const Account: React.FC<Props> = ({ lang }) => {
   const t = useTranslations(lang);
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const userData = localStorage.getItem('user');
-
-    if (isLoggedIn === 'true' && userData) {
-      setUser(JSON.parse(userData));
-    } else {
+    if (!token) {
       window.location.href = l('/login');
+    } else {
+      // Convertir userData de Jotai al formato esperado por el componente
+      setUser({
+        username: userData?.name || 'User',
+        email: userData?.email || '',
+        country: '',
+      });
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [token, userData, l]);
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
+    logout();
     window.location.href = l('/');
   };
 
@@ -264,6 +272,7 @@ const DonationsView = ({ t }: { t: any }) => (
 );
 
 import { CountrySelector } from './CountrySelector';
+import { ChangePasswordForm } from './ChangePasswordForm';
 
 const SettingsView = ({ type, t }: { type: 'password' | 'general', t: any }) => {
   const [country, setCountry] = useState('');
@@ -305,24 +314,10 @@ const SettingsView = ({ type, t }: { type: 'password' | 'general', t: any }) => 
         </p>
       </div>
 
-      <form className="max-w-md space-y-6" onSubmit={handleSave}>
-        {type === 'password' ? (
-          <>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Current Password</label>
-              <input type="password" placeholder="••••••••" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-accent/50 transition-all" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">New Password</label>
-              <input type="password" placeholder="••••••••" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-accent/50 transition-all" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Confirm New Password</label>
-              <input type="password" placeholder="••••••••" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-accent/50 transition-all" />
-            </div>
-          </>
-        ) : (
-          <>
+      {type === 'password' ? (
+        <ChangePasswordForm onSuccess={() => alert('Password changed successfully!')} />
+      ) : (
+        <form className="max-w-md space-y-6" onSubmit={handleSave}>
             <div className="space-y-2">
               <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Email Address</label>
               <input 
@@ -345,12 +340,12 @@ const SettingsView = ({ type, t }: { type: 'password' | 'general', t: any }) => 
               <input type="checkbox" id="newsletter" className="w-5 h-5 rounded border-white/10 bg-white/5 text-brand-accent focus:ring-brand-accent" />
               <label htmlFor="newsletter" className="text-sm text-gray-300 font-medium">Receive game updates and newsletters</label>
             </div>
-          </>
+            
+            <button className="w-full py-4 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all">
+              Save Changes
+            </button>
+          </form>
         )}
-        <button className="w-full py-4 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all">
-          Save Changes
-        </button>
-      </form>
     </div>
   );
 };

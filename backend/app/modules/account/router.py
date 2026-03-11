@@ -42,3 +42,9 @@ def get_stats(
     current_account: AccountResponse = Depends(get_current_account)
 ):
     return repository.get_account_stats(db, current_account.id)
+
+@router.get("/me", response_model=AccountResponse)
+def get_me(
+    current_account: AccountResponse = Depends(get_current_account)
+):
+    return current_account
