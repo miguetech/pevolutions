@@ -1,0 +1,11 @@
+---
+import AdminLayout from '@/apps/admin/layouts/AdminLayout.astro';
+import { Dashboard } from '@/apps/admin/features/dashboard/Dashboard';
+import { Providers } from '../../components/providers/Providers';
+---
+
+<AdminLayout>
+  <Providers>
+    <Dashboard client:load />
+  </Providers>
+</AdminLayout>

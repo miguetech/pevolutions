@@ -3,7 +3,7 @@ import { Providers } from './providers/Providers';
 
 export function RegisterFormWithProvider() {
   const handleSuccess = () => {
-    window.location.href = '/';
+    window.location.href = '/login';
   };
 
   return (
