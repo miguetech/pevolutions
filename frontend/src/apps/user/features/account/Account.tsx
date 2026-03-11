@@ -34,8 +34,8 @@ const Account: React.FC<Props> = ({ lang }) => {
     window.location.href = l('/');
   };
 
-  if (!token) return null;
-  if (!userData) return <div className="text-center p-8">Loading...</div>;
+  // Don't render until we have user data to avoid hydration mismatch
+  if (!userData) return null;
 
   const user = {
     username: userData.name || 'User',
