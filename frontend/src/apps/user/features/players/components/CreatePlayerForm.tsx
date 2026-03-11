@@ -85,7 +85,11 @@ export const CreatePlayerForm: React.FC = () => {
         {isError && (
           <div className="p-3 bg-red-900/50 border border-red-500 rounded">
             <p className="text-red-400 text-sm">
-              {error instanceof Error ? error.message : 'Failed to create character'}
+              {error instanceof Error 
+                ? error.message 
+                : typeof error === 'object' && error && 'detail' in error
+                ? String(error.detail)
+                : 'Failed to create character'}
             </p>
           </div>
         )}
