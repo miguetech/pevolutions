@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { authAPI } from '../api/authAPI';
 import { useAuth } from '@/auth/hooks/useAuth';
+import { CountrySelector } from '@/shared/components/navigation/CountrySelector';
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -12,10 +13,12 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [flag, setFlag] = useState('');
+  const [acceptRules, setAcceptRules] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const registerMutation = useMutation({
-    mutationFn: () => authAPI.register({ name, email, password }),
+    mutationFn: () => authAPI.register({ name, email, password, flag }),
     onSuccess: () => {
       onSuccess?.();
     },
@@ -25,7 +28,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     const newErrors: Record<string, string> = {};
     
     if (!name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = 'Account name is required';
     }
     
     if (!email.trim()) {
@@ -42,6 +45,14 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     
     if (password !== confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    if (!flag) {
+      newErrors.flag = 'Country is required';
+    }
+
+    if (!acceptRules) {
+      newErrors.acceptRules = 'You must accept the game rules';
     }
     
     setErrors(newErrors);
@@ -60,7 +71,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="name" className="block text-sm font-medium mb-1">
-          Name
+          Account Name
         </label>
         <input
           id="name"
@@ -87,6 +98,18 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         />
         {errors.email && (
           <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+        )}
+      </div>
+
+      <div>
+        <CountrySelector
+          label="Country"
+          placeholder="Select your country"
+          value={flag}
+          onChange={setFlag}
+        />
+        {errors.flag && (
+          <p className="text-red-400 text-sm mt-1">{errors.flag}</p>
         )}
       </div>
 
@@ -121,6 +144,22 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           <p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
         )}
       </div>
+
+      <div className="flex items-start gap-3">
+        <input
+          id="acceptRules"
+          type="checkbox"
+          checked={acceptRules}
+          onChange={(e) => setAcceptRules(e.target.checked)}
+          className="mt-1"
+        />
+        <label htmlFor="acceptRules" className="text-sm text-gray-300">
+          I agree to follow the game rules
+        </label>
+      </div>
+      {errors.acceptRules && (
+        <p className="text-red-400 text-sm">{errors.acceptRules}</p>
+      )}
 
       {registerMutation.error && (
         <p className="text-red-400 text-sm">Registration failed</p>
