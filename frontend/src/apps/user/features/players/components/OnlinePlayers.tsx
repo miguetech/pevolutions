@@ -1,4 +1,4 @@
-import { useOnlinePlayers } from '@/hooks/usePlayers';
+import { useOnlinePlayers } from '../hooks/usePlayers';
 
 export function OnlinePlayers() {
   const { data: players, isLoading, error } = useOnlinePlayers({ limit: 10 });

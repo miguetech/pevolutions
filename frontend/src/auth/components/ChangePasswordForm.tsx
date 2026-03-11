@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { accountAPI } from '@/shared/lib/api';
+import { accountAPI } from '@/apps/user/features/account/api/accountAPI';
 
 interface ChangePasswordFormProps {
   onSuccess?: () => void;

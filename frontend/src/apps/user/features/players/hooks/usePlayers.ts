@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { playersAPI } from '@/shared/lib/api';
+import { playersAPI } from '../api/playersAPI';
 import { useAtomValue } from 'jotai';
 import { tokenAtom } from '@/auth/stores/authAtoms';
 

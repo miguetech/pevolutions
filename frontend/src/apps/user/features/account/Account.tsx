@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useAtomValue } from 'jotai';
 import { tokenAtom, userAtom } from '@/auth/stores/authAtoms';
 import { useAuth } from '@/auth/hooks/useAuth';
-import { useLocalizedPath, useTranslations } from '../i18n/utils';
+import { useLocalizedPath, useTranslations } from '@/i18n/utils';
 
 interface Props {
   lang: 'en' | 'es' | 'pt';

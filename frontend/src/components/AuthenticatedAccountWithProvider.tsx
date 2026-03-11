@@ -1,4 +1,4 @@
-import AuthenticatedAccount from './AuthenticatedAccount';
+import AuthenticatedAccount from '@/apps/user/features/account/components/AuthenticatedAccount';
 import { Providers } from './providers/Providers';
 
 interface Props {
