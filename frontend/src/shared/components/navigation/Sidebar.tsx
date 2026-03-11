@@ -55,9 +55,9 @@ export const LoginBox: React.FC<SidebarProps> = ({ lang }) => {
             </svg>
           </a>
         </div>
-        <div className="flex flex-col gap-1 text-sm text-gray-400">
-          <a href={l('/register')} className="hover:text-brand-accent font-medium">{t('sidebar.new_account')}</a>
-          <a href="#" className="hover:text-brand-accent font-medium">{t('sidebar.recovery')}</a>
+        <div className="flex flex-col gap-1 text-sm">
+          <a href={l('/register')} className="text-brand-accent hover:text-brand-accent/80 font-medium">{t('sidebar.new_account')}</a>
+          <a href="#" className="text-gray-400 hover:text-brand-accent font-medium">{t('sidebar.recovery')}</a>
         </div>
       </div>
     </SidebarCard>
