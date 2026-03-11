@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SidebarCard from '../ui/SidebarCard';
+import SidebarCard from '@/shared/components/ui/SidebarCard';
 import { useTranslations, useLocalizedPath } from '@/i18n/utils';
 
 interface SidebarProps {

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navbar from '@/shared/components/navigation/Navbar';
-import OnlinePlayersList from '../components/OnlinePlayers';
+import { OnlinePlayersWithProvider } from '../components/OnlinePlayersWithProvider';
 import Footer from '@/shared/components/navigation/Footer';
 import { ServerInfo, TopPlayers } from '@/shared/components/navigation/Sidebar';
 import { getLangFromUrl } from '../i18n/utils';
@@ -22,7 +22,7 @@ const lang = getLangFromUrl(Astro.url);
 
 			{/* Left Column: Online Players List */}
 			<div class="lg:col-span-8 lg:order-1 space-y-8">
-				<OnlinePlayersList client:load lang={lang as 'en' | 'es' | 'pt'} />
+				<OnlinePlayersWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} />
 			</div>
 		</div>
 	</main>
