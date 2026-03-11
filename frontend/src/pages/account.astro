@@ -2,8 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '../components/NavbarWithProvider';
 import { AccountWithProvider } from '../components/AccountWithProvider';
-import Footer from '../components/Footer';
-import { ServerInfo, TopPlayers } from '../components/Sidebar';
+import Footer from '@/shared/components/navigation/Footer';
+import { ServerInfo, TopPlayers } from '@/shared/components/navigation/Sidebar';
 import { getLangFromUrl } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);

@@ -1,6 +1,6 @@
 import React from 'react';
-import DownloadCard from './DownloadCard';
-import { useTranslations } from '../i18n/utils';
+import DownloadCard from './components/DownloadCard';
+import { useTranslations } from '@/i18n/utils';
 
 interface Props {
   lang: 'en' | 'es' | 'pt';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalizedPath, useTranslations } from '../i18n/utils';
-import { CountrySelector } from './CountrySelector';
+import { CountrySelector } from '@/shared/components/navigation/CountrySelector';
 
 interface AuthFormProps {
   type: 'login' | 'register';

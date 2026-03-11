@@ -1,4 +1,4 @@
-import { LoginForm } from './LoginForm';
+import { LoginForm } from '@/auth/components/LoginForm';
 import { Providers } from './providers/Providers';
 
 export function LoginFormWithProvider() {

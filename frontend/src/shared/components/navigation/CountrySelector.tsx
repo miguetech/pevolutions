@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { countries } from '../data/countries';
+import { countries } from '@/data/countries';
 
 interface CountrySelectorProps {
   value: string;

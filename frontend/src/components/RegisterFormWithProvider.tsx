@@ -1,4 +1,4 @@
-import { RegisterForm } from './RegisterForm';
+import { RegisterForm } from '@/auth/components/RegisterForm';
 import { Providers } from './providers/Providers';
 
 export function RegisterFormWithProvider() {

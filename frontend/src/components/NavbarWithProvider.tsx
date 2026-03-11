@@ -1,4 +1,4 @@
-import Navbar from './Navbar';
+import Navbar from '@/shared/components/navigation/Navbar';
 import { Providers } from './providers/Providers';
 
 interface Props {

@@ -1,9 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar';
-import DownloadsComponent from '../components/Downloads';
-import Footer from '../components/Footer';
-import { ServerInfo, RequirementsCard } from '../components/Sidebar';
+import Navbar from '@/shared/components/navigation/Navbar';
+import DownloadsComponent from '../apps/public/features/downloads/Downloads';
+import Footer from '@/shared/components/navigation/Footer';
+import { ServerInfo, RequirementsCard } from '@/shared/components/navigation/Sidebar';
 import { getLangFromUrl } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);

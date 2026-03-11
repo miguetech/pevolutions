@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '../components/NavbarWithProvider';
-import Hero from '../components/Hero';
-import { TopPlayers, ServerInfo } from '../components/Sidebar';
+import Hero from '../apps/public/features/home/components/Hero';
+import { TopPlayers, ServerInfo } from '@/shared/components/navigation/Sidebar';
 import { AuthenticatedLoginBoxWithProvider } from '../components/AuthenticatedLoginBoxWithProvider';
-import Footer from '../components/Footer';
+import Footer from '@/shared/components/navigation/Footer';
 import { getLangFromUrl } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);

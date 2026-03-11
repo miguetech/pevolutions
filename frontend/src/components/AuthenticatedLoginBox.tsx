@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
 import { tokenAtom, userAtom } from '@/auth/stores/authAtoms';
-import SidebarCard from './SidebarCard';
+import SidebarCard from '@/shared/components/ui/SidebarCard';
 import { useTranslations, useLocalizedPath } from '../i18n/utils';
 
 interface SidebarProps {

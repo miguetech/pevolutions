@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslations } from '../i18n/utils';
+import { useTranslations } from '@/i18n/utils';
 
 interface Props {
   lang: 'en' | 'es' | 'pt';

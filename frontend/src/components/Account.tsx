@@ -271,8 +271,8 @@ const DonationsView = ({ t }: { t: any }) => (
   </div>
 );
 
-import { CountrySelector } from './CountrySelector';
-import { ChangePasswordForm } from './ChangePasswordForm';
+import { CountrySelector } from '@/shared/components/navigation/CountrySelector';
+import { ChangePasswordForm } from '@/auth/components/ChangePasswordForm';
 
 const SettingsView = ({ type, t }: { type: 'password' | 'general', t: any }) => {
   const [country, setCountry] = useState('');

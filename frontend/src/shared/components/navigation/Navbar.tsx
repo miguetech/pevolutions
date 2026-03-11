@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAtomValue } from 'jotai';
 import { tokenAtom } from '@/auth/stores/authAtoms';
-import { useTranslations, useLocalizedPath } from '../i18n/utils';
+import { useTranslations, useLocalizedPath } from '@/i18n/utils';
 import LanguagePicker from './LanguagePicker';
 
 interface Props {

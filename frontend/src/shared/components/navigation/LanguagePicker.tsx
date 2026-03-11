@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { languages } from '../i18n/ui';
+import { languages } from '@/i18n/ui';
 
 interface LanguagePickerProps {
   currentLang: 'en' | 'es' | 'pt';

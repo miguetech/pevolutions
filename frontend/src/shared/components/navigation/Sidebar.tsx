@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import SidebarCard from './SidebarCard';
-import { useTranslations, useLocalizedPath } from '../i18n/utils';
+import SidebarCard from '../ui/SidebarCard';
+import { useTranslations, useLocalizedPath } from '@/i18n/utils';
 
 interface SidebarProps {
   lang: 'en' | 'es' | 'pt';
