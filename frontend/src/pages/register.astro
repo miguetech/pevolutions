@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { RegisterFormWithProvider } from '../components/RegisterFormWithProvider';
 import { NavbarWithProvider } from '../components/NavbarWithProvider';
 
-const lang = 'en';
+const lang = (Astro.currentLocale || 'en') as 'en' | 'es' | 'pt';
 ---
 
 <Layout title="Register - PEvolutions">
