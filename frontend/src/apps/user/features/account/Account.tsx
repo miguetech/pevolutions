@@ -34,7 +34,8 @@ const Account: React.FC<Props> = ({ lang }) => {
     window.location.href = l('/');
   };
 
-  if (!token || !userData) return null;
+  if (!token) return null;
+  if (!userData) return <div className="text-center p-8">Loading...</div>;
 
   const user = {
     username: userData.name || 'User',
