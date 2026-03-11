@@ -3,6 +3,9 @@ import { useAtomValue } from 'jotai';
 import { tokenAtom, userAtom } from '@/auth/stores/authAtoms';
 import { useAuth } from '@/auth/hooks/useAuth';
 import { useLocalizedPath, useTranslations } from '@/i18n/utils';
+import { AccountStats } from './components/AccountStats';
+import { PlayersList } from '@/apps/user/features/players/components/PlayersList';
+import { CreatePlayerForm } from '@/apps/user/features/players/components/CreatePlayerForm';
 
 interface Props {
   lang: 'en' | 'es' | 'pt';
@@ -124,94 +127,14 @@ const Account: React.FC<Props> = ({ lang }) => {
 
 const DashboardView = ({ user, t }: { user: any, t: any }) => (
   <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-    {/* Stats Grid */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {[
-        { label: 'Total Playing', value: '12h 45m', color: 'text-blue-400', icon: '⏱️' },
-        { label: 'Pokémon Caught', value: '1,240', color: 'text-brand-pokemon-gold', icon: '🎒' },
-        { label: 'World Ranking', value: '#4,520', color: 'text-brand-accent', icon: '🏆' }
-      ].map((stat, i) => (
-        <div key={i} className="glass-card p-6 border-none bg-white/[0.02] flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <span className="text-2xl">{stat.icon}</span>
-            <span className={`text-xl font-black ${stat.color}`}>{stat.value}</span>
-          </div>
-          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{stat.label}</span>
-        </div>
-      ))}
-    </div>
-
-    {/* Character List (New) */}
-    <div className="space-y-4">
-      <h4 className="text-lg font-black text-white uppercase italic tracking-wider flex items-center gap-3">
-        <div className="w-2 h-2 bg-brand-accent rounded-full"></div>
-        My Characters
-      </h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {[
-          { name: 'Sylarnal', level: 85, gender: 'boy', icon: '🔥' },
-          { name: 'PokeMaster', level: 12, gender: 'girl', icon: '⚡' }
-        ].map((char, i) => (
-          <div key={i} className="glass-card p-4 flex items-center gap-4 group cursor-pointer hover:border-brand-accent/30 transition-all bg-white/[0.01]">
-            <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">{char.icon}</div>
-            <div className="flex-1">
-              <h5 className="font-black text-white text-base leading-none">{char.name}</h5>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] font-black text-gray-500 uppercase">Lv. {char.level}</span>
-                <span className={`text-[10px] font-bold ${char.gender === 'boy' ? 'text-blue-400' : 'text-pink-400'}`}>
-                  {char.gender === 'boy' ? 'Boy' : 'Girl'}
-                </span>
-              </div>
-            </div>
-            <button className="p-2 rounded-lg bg-white/5 hover:bg-brand-accent/20 text-gray-500 hover:text-brand-accent transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-            </button>
-          </div>
-        ))}
-        <button className="glass-card p-4 border-dashed border-white/10 flex items-center justify-center gap-3 text-gray-500 hover:text-white hover:border-brand-accent/30 transition-all bg-transparent group">
-          <span className="text-xl group-hover:rotate-90 transition-transform">+</span>
-          <span className="text-sm font-black uppercase tracking-widest">Create Character</span>
-        </button>
-      </div>
-    </div>
+    <AccountStats />
+    <PlayersList />
   </div>
 );
 
 const CreateCharView = ({ t }: { t: any }) => (
-  <div className="glass-card p-8 space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-    <div className="space-y-2">
-      <h3 className="text-2xl font-black text-white uppercase italic">{t('account.create_char')}</h3>
-      <p className="text-sm text-gray-400">Choose your name and gender to begin your adventure.</p>
-    </div>
-
-    <form className="max-w-md space-y-6" onSubmit={(e) => e.preventDefault()}>
-      <div className="space-y-3">
-        <label className="flex items-center gap-3 text-xs font-black text-gray-500 uppercase tracking-widest ml-1">
-          <div className="w-5 h-5 rounded-full bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-[10px] text-brand-accent">🧬</div>
-          {t('account.char_name')}
-        </label>
-        <input 
-          type="text" 
-          placeholder="Character name..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent/50 transition-all font-medium"
-        />
-      </div>
-
-      <div className="space-y-3">
-        <label className="flex items-center gap-3 text-xs font-black text-gray-500 uppercase tracking-widest ml-1">
-          <div className="w-5 h-5 rounded-full bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-[10px] text-brand-accent">⚧</div>
-          {t('account.char_gender')}
-        </label>
-        <select className="w-full bg-brand-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-accent/50 transition-all font-medium appearance-none cursor-pointer">
-          <option value="boy">{t('account.char_male')}</option>
-          <option value="girl">{t('account.char_female')}</option>
-        </select>
-      </div>
-
-      <button className="w-full py-4 bg-brand-accent text-brand-bg font-black uppercase tracking-widest rounded-xl hover:scale-[1.02] shadow-[0_0_20px_rgba(0,243,255,0.2)] transition-all">
-        {t('account.char_submit')}
-      </button>
-    </form>
+  <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+    <CreatePlayerForm />
   </div>
 );
 

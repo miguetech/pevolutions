@@ -1,8 +1,14 @@
 import { api } from '@/shared/lib/api';
 
 export interface AccountStats {
-  total_players: number;
-  online_players: number;
+  total_playing_time: number;
+  pokemon_caught: number;
+  world_ranking: number;
+}
+
+export interface UpdateSettingsRequest {
+  email?: string;
+  flag?: string;
 }
 
 export const accountAPI = {
@@ -12,4 +18,7 @@ export const accountAPI = {
   
   changePassword: (current_password: string, new_password: string) =>
     api.put('api/account/password', { json: { current_password, new_password } }).json(),
+  
+  updateSettings: (data: UpdateSettingsRequest) =>
+    api.put('api/account/settings', { json: data }).json(),
 };
