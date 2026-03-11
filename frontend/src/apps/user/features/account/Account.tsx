@@ -4,8 +4,10 @@ import { tokenAtom, userAtom } from '@/auth/stores/authAtoms';
 import { useAuth } from '@/auth/hooks/useAuth';
 import { useLocalizedPath, useTranslations } from '@/i18n/utils';
 import { AccountStats } from './components/AccountStats';
+import { SettingsForm } from './components/SettingsForm';
 import { PlayersList } from '@/apps/user/features/players/components/PlayersList';
 import { CreatePlayerForm } from '@/apps/user/features/players/components/CreatePlayerForm';
+import { ChangePasswordForm } from '@/auth/components/ChangePasswordForm';
 
 interface Props {
   lang: 'en' | 'es' | 'pt';
@@ -194,83 +196,17 @@ const DonationsView = ({ t }: { t: any }) => (
   </div>
 );
 
-import { CountrySelector } from '@/shared/components/navigation/CountrySelector';
-import { ChangePasswordForm } from '@/auth/components/ChangePasswordForm';
-
-const SettingsView = ({ type, t }: { type: 'password' | 'general', t: any }) => {
-  const [country, setCountry] = useState('');
-  const [email, setEmail] = useState('');
-
-  useEffect(() => {
-    if (type === 'general') {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        setCountry(user.country || '');
-        setEmail(user.email || '');
-      }
-    }
-  }, [type]);
-
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (type === 'general') {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        const updatedUser = { ...user, country, email };
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-        alert('Settings saved!');
-        window.location.reload(); 
-      }
-    }
-  };
-
-  return (
-    <div className="glass-card p-8 space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-      <div className="space-y-2">
-        <h3 className="text-2xl font-black text-white uppercase italic">
-          {type === 'password' ? t('account.change_pwd') : t('account.settings')}
-        </h3>
-        <p className="text-sm text-gray-400">
-          {type === 'password' ? 'Update your account security regularly.' : 'Manage your account preferences and info.'}
-        </p>
-      </div>
-
-      {type === 'password' ? (
+const SettingsView = ({ type, t }: { type: 'password' | 'general', t: any }) => (
+  <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+    {type === 'password' ? (
+      <div className="bg-gray-800 rounded-lg p-6">
+        <h3 className="text-xl font-bold mb-4">🔑 Change Password</h3>
         <ChangePasswordForm onSuccess={() => alert('Password changed successfully!')} />
-      ) : (
-        <form className="max-w-md space-y-6" onSubmit={handleSave}>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Email Address</label>
-              <input 
-                type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="user@example.com" 
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-accent/50 transition-all" 
-              />
-            </div>
-            
-            <CountrySelector 
-              label={t('form.country')}
-              placeholder={t('form.select_country')}
-              value={country}
-              onChange={setCountry}
-            />
-
-            <div className="flex items-center gap-4 p-4 glass-card bg-white/[0.02]">
-              <input type="checkbox" id="newsletter" className="w-5 h-5 rounded border-white/10 bg-white/5 text-brand-accent focus:ring-brand-accent" />
-              <label htmlFor="newsletter" className="text-sm text-gray-300 font-medium">Receive game updates and newsletters</label>
-            </div>
-            
-            <button className="w-full py-4 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all">
-              Save Changes
-            </button>
-          </form>
-        )}
-    </div>
-  );
-};
+      </div>
+    ) : (
+      <SettingsForm />
+    )}
+  </div>
+);
 
 export default Account;

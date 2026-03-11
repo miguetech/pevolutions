@@ -8,6 +8,9 @@ export const getPlayers = () => api.get('api/players/').json<Player[]>();
 export const createPlayer = (data: { name: string; sex: number }) =>
   api.post('api/players/', { json: data }).json<Player>();
 
+export const deletePlayer = (name: string) =>
+  api.delete(`api/players/${name}`).json();
+
 export const playersAPI = {
   getPlayers,
   getAll: getPlayers,
@@ -15,4 +18,5 @@ export const playersAPI = {
     api.get('api/players/online', { searchParams: params }).json<Player[]>(),
   createPlayer,
   create: createPlayer,
+  deletePlayer,
 };

@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePlayersList } from '../hooks/usePlayersList';
+import { useDeletePlayer } from '../hooks/useDeletePlayer';
 import { PlayerCard } from './PlayerCard';
 
 interface Props {
   onViewPlayer?: (name: string) => void;
-  onDeletePlayer?: (name: string) => void;
 }
 
-export const PlayersList: React.FC<Props> = ({ onViewPlayer, onDeletePlayer }) => {
+export const PlayersList: React.FC<Props> = ({ onViewPlayer }) => {
   const { data: players, isLoading, isError } = usePlayersList();
+  const { mutate: deletePlayer, isPending: isDeleting } = useDeletePlayer();
+  const [deletingName, setDeletingName] = useState<string | null>(null);
+
+  const handleDelete = (name: string) => {
+    if (confirm(`Are you sure you want to delete ${name}?`)) {
+      setDeletingName(name);
+      deletePlayer(name, {
+        onSettled: () => setDeletingName(null),
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -46,7 +57,7 @@ export const PlayersList: React.FC<Props> = ({ onViewPlayer, onDeletePlayer }) =
             key={player.id}
             player={player}
             onView={onViewPlayer}
-            onDelete={onDeletePlayer}
+            onDelete={handleDelete}
           />
         ))}
       </div>
