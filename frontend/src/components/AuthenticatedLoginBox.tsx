@@ -44,7 +44,7 @@ export const AuthenticatedLoginBox: React.FC<SidebarProps> = ({ lang }) => {
         <a href={l('/login')} className="w-full bg-brand-accent text-brand-bg font-black uppercase tracking-widest text-xs py-3 rounded-lg text-center hover:scale-[1.02] transition-transform">
           {t('sidebar.login')}
         </a>
-        <a href={l('/register')} className="w-full bg-white/10 text-white font-black uppercase tracking-widest text-xs py-3 rounded-lg text-center hover:bg-white/20 transition-colors">
+        <a href={l('/register')} className="w-full bg-brand-accent/20 border border-brand-accent text-brand-accent font-black uppercase tracking-widest text-xs py-3 rounded-lg text-center hover:bg-brand-accent/30 transition-colors">
           {t('sidebar.register')}
         </a>
       </div>
