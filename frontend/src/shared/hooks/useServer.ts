@@ -38,5 +38,7 @@ export function useDownloads() {
     queryKey: ['downloads'],
     queryFn: serverAPI.getDownloads,
     staleTime: 300000,
+    retry: 1,
+    retryDelay: 1000,
   });
 }

@@ -64,17 +64,24 @@ def get_support_staff():
 def get_downloads():
     return [
         {
-            "name": "PEvolutions Client",
+            "name": "MEGA",
             "version": "1.0.0",
             "size": "250 MB",
-            "url": "/downloads/pevolutions-client-1.0.0.exe",
+            "url": "https://mega.nz/file/example",
             "platform": "Windows"
         },
         {
-            "name": "PEvolutions Client",
+            "name": "MediaFire",
             "version": "1.0.0",
-            "size": "280 MB",
-            "url": "/downloads/pevolutions-client-1.0.0.dmg",
-            "platform": "macOS"
+            "size": "250 MB",
+            "url": "https://mediafire.com/file/example",
+            "platform": "Windows"
+        },
+        {
+            "name": "Google Drive",
+            "version": "1.0.0",
+            "size": "250 MB",
+            "url": "https://drive.google.com/file/example",
+            "platform": "Windows"
         }
     ]

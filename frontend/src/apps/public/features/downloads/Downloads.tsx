@@ -9,7 +9,34 @@ interface Props {
 
 const Downloads: React.FC<Props> = ({ lang }) => {
   const t = useTranslations(lang);
-  const { data: downloads, isLoading } = useDownloads();
+  const { data: downloads, isLoading, isError } = useDownloads();
+
+  const getIconForDownload = (name: string) => {
+    if (name === 'MEGA') {
+      return (
+        <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-4.5l-2.5 3.5L4 11.5V16H2V8h2l2.5 3.5L9 8h2v8zm8 0h-2v-4.5l-2.5 3.5-2.5-3.5V16h-2V8h2l2.5 3.5L17 8h2v8z"/>
+        </svg>
+      );
+    } else if (name === 'MediaFire') {
+      return (
+        <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" />
+        </svg>
+      );
+    } else if (name === 'Google Drive') {
+      return (
+        <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" />
+        </svg>
+      );
+    }
+    return (
+      <svg className="w-8 h-8 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" />
+      </svg>
+    );
+  };
 
   const downloadSources = [
     {
@@ -66,11 +93,7 @@ const Downloads: React.FC<Props> = ({ lang }) => {
               name={download.name}
               description={`${download.platform} - ${download.size}`}
               url={download.url}
-              icon={
-                <svg className="w-8 h-8 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" />
-                </svg>
-              }
+              icon={getIconForDownload(download.name)}
               recommended={index === 0}
             />
           ))

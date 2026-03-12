@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
-import CommunityHub from '../apps/public/features/community/Community';
+import { CommunityWithProvider } from '@/components/PublicFeaturesWithProvider';
 import Footer from '@/shared/components/navigation/Footer';
 import { ServerInfoWithProvider, TopPlayersWithProvider } from '@/shared/components/navigation/SidebarWithProvider';
 import { getLangFromUrl } from '../i18n/utils';
@@ -22,7 +22,7 @@ const lang = getLangFromUrl(Astro.url);
 
 			{/* Left Column: Community Content */}
 			<div class="lg:col-span-8 lg:order-1">
-				<CommunityHub client:load lang={lang as 'en' | 'es' | 'pt'} />
+				<CommunityWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} />
 			</div>
 		</div>
 	</main>

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
-import SupportComponent from '../apps/public/features/support/Support';
+import { SupportWithProvider } from '@/components/PublicFeaturesWithProvider';
 import Footer from '@/shared/components/navigation/Footer';
 import { ServerInfoWithProvider, TopPlayersWithProvider } from '@/shared/components/navigation/SidebarWithProvider';
 import { getLangFromUrl } from '../i18n/utils';
@@ -22,7 +22,7 @@ const lang = getLangFromUrl(Astro.url);
 
 			{/* Left Column: Support Content */}
 			<div class="lg:col-span-8 lg:order-1">
-				<SupportComponent client:load lang={lang as 'en' | 'es' | 'pt'} />
+				<SupportWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} />
 			</div>
 		</div>
 	</main>

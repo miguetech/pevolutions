@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
-import DownloadsComponent from '../apps/public/features/downloads/Downloads';
+import { DownloadsWithProvider } from '@/components/PublicFeaturesWithProvider';
 import Footer from '@/shared/components/navigation/Footer';
 import { ServerInfoWithProvider } from '@/shared/components/navigation/SidebarWithProvider';
 import { RequirementsCard } from '@/shared/components/navigation/Sidebar';
@@ -23,7 +23,7 @@ const lang = getLangFromUrl(Astro.url);
 
 			<!-- Left Column: Downloads -->
 			<div class="lg:col-span-8 lg:order-1 space-y-8">
-				<DownloadsComponent client:visible lang={lang as 'en' | 'es' | 'pt'} />
+				<DownloadsWithProvider client:visible lang={lang as 'en' | 'es' | 'pt'} />
 			</div>
 		</div>
 	</main>
