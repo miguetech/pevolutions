@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '../components/NavbarWithProvider';
 import Hero from '../apps/public/features/home/components/Hero';
-import { TopPlayers, ServerInfo } from '@/shared/components/navigation/Sidebar';
+import { TopPlayersWithProvider, ServerInfoWithProvider } from '@/shared/components/navigation/SidebarWithProvider';
 import { AuthenticatedLoginBoxWithProvider } from '../components/AuthenticatedLoginBoxWithProvider';
 import Footer from '@/shared/components/navigation/Footer';
 import { getLangFromUrl } from '../i18n/utils';
@@ -18,8 +18,8 @@ const lang = getLangFromUrl(Astro.url);
 			{/* Right Column: Sidebar (Appears first on mobile) */}
 			<aside class="lg:col-span-4 lg:order-2 flex flex-col gap-y-10">
 				<div><AuthenticatedLoginBoxWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
-				<div><TopPlayers client:visible lang={lang as 'en' | 'es' | 'pt'} /></div>
-				<div><ServerInfo client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
+				<div><TopPlayersWithProvider client:visible lang={lang as 'en' | 'es' | 'pt'} /></div>
+				<div><ServerInfoWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
 			</aside>
 
 			{/* Left Column: Hero/News */}

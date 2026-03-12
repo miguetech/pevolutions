@@ -3,7 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
 import DownloadsComponent from '../apps/public/features/downloads/Downloads';
 import Footer from '@/shared/components/navigation/Footer';
-import { ServerInfo, RequirementsCard } from '@/shared/components/navigation/Sidebar';
+import { ServerInfoWithProvider } from '@/shared/components/navigation/SidebarWithProvider';
+import { RequirementsCard } from '@/shared/components/navigation/Sidebar';
 import { getLangFromUrl } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -16,7 +17,7 @@ const lang = getLangFromUrl(Astro.url);
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 			<!-- Right Column: Sidebar (First on mobile) -->
 			<aside class="lg:col-span-4 lg:order-2 flex flex-col gap-y-10">
-				<div><ServerInfo client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
+				<div><ServerInfoWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
 				<div><RequirementsCard client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
 			</aside>
 

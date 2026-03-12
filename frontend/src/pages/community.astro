@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
 import CommunityHub from '../apps/public/features/community/Community';
 import Footer from '@/shared/components/navigation/Footer';
-import { ServerInfo, TopPlayers } from '@/shared/components/navigation/Sidebar';
+import { ServerInfoWithProvider, TopPlayersWithProvider } from '@/shared/components/navigation/SidebarWithProvider';
 import { getLangFromUrl } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -16,8 +16,8 @@ const lang = getLangFromUrl(Astro.url);
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 			{/* Right Column: Sidebar (First on mobile) */}
 			<aside class="lg:col-span-4 lg:order-2 flex flex-col gap-y-10">
-				<div><ServerInfo client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
-				<div><TopPlayers client:visible lang={lang as 'en' | 'es' | 'pt'} /></div>
+				<div><ServerInfoWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
+				<div><TopPlayersWithProvider client:visible lang={lang as 'en' | 'es' | 'pt'} /></div>
 			</aside>
 
 			{/* Left Column: Community Content */}
