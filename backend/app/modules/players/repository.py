@@ -74,7 +74,10 @@ def get_player_stats(db: Session, player_name: str):
     }
 
 def get_online_players(db: Session, sort_by: str = "level", search: str = None, limit: int = 50):
-    query = db.query(models.Player).filter(models.Player.level > 0)
+    query = db.query(models.Player).join(
+        models.PlayerOnline,
+        models.Player.id == models.PlayerOnline.player_id
+    )
     
     if search:
         query = query.filter(models.Player.name.like(f"%{search}%"))

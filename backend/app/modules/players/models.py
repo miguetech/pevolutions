@@ -27,6 +27,11 @@ class Player(Base):
     account = relationship("Account", back_populates="players")
     pokemon_team = relationship("PokemonTeam", back_populates="player", uselist=False)
 
+class PlayerOnline(Base):
+    __tablename__ = "players_online"
+
+    player_id = Column(Integer, ForeignKey("players.id"), primary_key=True)
+
 class PokemonTeam(Base):
     __tablename__ = "pokemonteam"
 
