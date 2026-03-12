@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai';
 import { tokenAtom } from '@/auth/stores/authAtoms';
 import { useTranslations, useLocalizedPath } from '@/i18n/utils';
 import LanguagePicker from './LanguagePicker';
+import { PlayerSearch } from '../search/PlayerSearch';
 
 interface Props {
   lang: 'en' | 'es' | 'pt';
@@ -91,22 +92,8 @@ const Navbar: React.FC<Props> = ({ lang }) => {
           </div>
           
           {/* Desktop Search */}
-          <div className="relative hidden md:flex items-center group">
-            <input 
-              type="text" 
-              placeholder={t('nav.search')} 
-              className="bg-white/5 border border-white/10 rounded-xl py-2 pl-10 pr-0 text-sm focus:outline-none focus:border-brand-accent focus:w-64 focus:pr-4 w-10 group-hover:w-64 group-hover:pr-4 group-hover:bg-white/10 transition-all duration-500 ease-in-out placeholder:opacity-0 group-hover:placeholder:opacity-100 focus:placeholder:opacity-100 text-white"
-            />
-            <div className="absolute left-3 pointer-events-none flex items-center">
-              <svg 
-                className="w-4 h-4 text-gray-500 group-hover:text-brand-accent group-focus-within:text-brand-accent transition-colors duration-300" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
+          <div className="hidden md:block">
+            <PlayerSearch placeholder={t('nav.search')} redirectToList={true} expandable={true} />
           </div>
 
           {/* Mobile Search Toggle */}
@@ -146,22 +133,7 @@ const Navbar: React.FC<Props> = ({ lang }) => {
       {/* Mobile Search Bar Dropdown */}
       {isSearchOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-brand-bg/95 backdrop-blur-lg border-b border-white/5 py-4 px-6 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="relative">
-            <input 
-              type="text" 
-              autoFocus
-              placeholder={t('nav.search')} 
-              className="w-full bg-brand-bg border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-brand-accent transition-colors"
-            />
-            <svg 
-              className="absolute left-4 top-3.5 w-5 h-5 text-brand-accent" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
+          <PlayerSearch placeholder={t('nav.search')} redirectToList={true} />
         </div>
       )}
 

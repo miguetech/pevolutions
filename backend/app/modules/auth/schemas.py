@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 class AccountCreate(BaseModel):
     name: str
@@ -13,7 +14,9 @@ class AccountResponse(BaseModel):
     id: int
     name: str
     email: str
+    flag: Optional[str] = None
     creation: int
+    role: int = 1
 
     class Config:
         from_attributes = True

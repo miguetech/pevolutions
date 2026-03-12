@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navbar from '@/shared/components/navigation/Navbar';
+import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
 import DownloadsComponent from '../apps/public/features/downloads/Downloads';
 import Footer from '@/shared/components/navigation/Footer';
 import { ServerInfo, RequirementsCard } from '@/shared/components/navigation/Sidebar';
@@ -10,7 +10,7 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout title="Downloads - PEvolutions">
-	<Navbar client:load lang={lang as 'en' | 'es' | 'pt'} />
+	<NavbarWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} />
 	
 	<main class="max-w-7xl mx-auto px-6 py-12">
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">

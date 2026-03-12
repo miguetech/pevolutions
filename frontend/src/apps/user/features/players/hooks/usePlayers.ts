@@ -17,7 +17,8 @@ export function useOnlinePlayers(params?: { limit?: number; sort_by?: string; se
   return useQuery({
     queryKey: ['players', 'online', params],
     queryFn: () => playersAPI.getOnline(params),
-    refetchInterval: 30000, // 30 segundos
+    refetchInterval: 30000,
+    staleTime: 10000,
   });
 }
 

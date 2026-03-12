@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SidebarCard from '@/shared/components/ui/SidebarCard';
 import { useTranslations, useLocalizedPath } from '@/i18n/utils';
+import { useTopPlayers, useServerInfo } from '@/shared/hooks/useServer';
 
 interface SidebarProps {
   lang: 'en' | 'es' | 'pt';
@@ -66,10 +67,7 @@ export const LoginBox: React.FC<SidebarProps> = ({ lang }) => {
 
 export const TopPlayers: React.FC<SidebarProps> = ({ lang }) => {
   const t = useTranslations(lang);
-  const players = [
-    { name: 'Sylarnal', score: 5 },
-    { name: 'Zaps', score: 3 }
-  ];
+  const { data: players, isLoading } = useTopPlayers(5);
 
   return (
     <SidebarCard 
@@ -81,19 +79,23 @@ export const TopPlayers: React.FC<SidebarProps> = ({ lang }) => {
       }
     >
       <div className="flex flex-col gap-3">
-        {players.map((player, i) => (
-          <div key={i} className="flex items-center justify-between group">
-            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 text-[10px] text-gray-400 font-bold">
-                {i + 1}
+        {isLoading ? (
+          <div className="text-sm text-gray-400">Loading...</div>
+        ) : (
+          players?.map((player, i) => (
+            <div key={i} className="flex items-center justify-between group">
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 text-[10px] text-gray-400 font-bold">
+                  {i + 1}
+                </div>
+                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">{player.name}</span>
               </div>
-              <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">{player.name}</span>
+              <div className="flex items-center gap-1">
+                <div className="w-4 h-4 bg-brand-pokemon-gold rounded-full flex items-center justify-center text-[10px] text-brand-bg font-bold animate-pulse">$</div>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-4 h-4 bg-brand-pokemon-gold rounded-full flex items-center justify-center text-[10px] text-brand-bg font-bold animate-pulse">$</div>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </SidebarCard>
   );
@@ -102,6 +104,7 @@ export const TopPlayers: React.FC<SidebarProps> = ({ lang }) => {
 export const ServerInfo: React.FC<SidebarProps> = ({ lang }) => {
   const t = useTranslations(lang);
   const l = useLocalizedPath(lang);
+  const { data: serverInfo, isLoading } = useServerInfo();
 
   return (
     <SidebarCard 
@@ -117,7 +120,7 @@ export const ServerInfo: React.FC<SidebarProps> = ({ lang }) => {
           <span className="text-xs uppercase font-bold text-green-500">{t('sidebar.status')}</span>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
-            <span className="text-xs font-bold text-green-400">{t('sidebar.online')}</span>
+            <span className="text-xs font-bold text-green-400">{isLoading ? '...' : serverInfo?.status || 'online'}</span>
           </div>
         </div>
         <a 
@@ -126,7 +129,9 @@ export const ServerInfo: React.FC<SidebarProps> = ({ lang }) => {
         >
           <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">{t('sidebar.players_online')}</span>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-black text-brand-accent tracking-widest group-hover:scale-110 transition-transform">07</span>
+            <span className="text-sm font-black text-brand-accent tracking-widest group-hover:scale-110 transition-transform">
+              {isLoading ? '...' : serverInfo?.online_count || 0}
+            </span>
             <svg className="w-3 h-3 text-brand-accent/50 group-hover:text-brand-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

@@ -13,5 +13,6 @@ class Account(Base):
     premium_ends_at = Column(BigInteger, nullable=False, default=0)
     premium_points = Column(Integer, nullable=True)
     flag = Column(String(80), nullable=False, default="")
+    role = Column(Integer, nullable=False, default=1)  # Default: PLAYER
     
     players = relationship("Player", back_populates="account")

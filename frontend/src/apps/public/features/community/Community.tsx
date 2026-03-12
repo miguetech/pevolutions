@@ -1,5 +1,8 @@
 import React from 'react';
 import { useTranslations } from '@/i18n/utils';
+import { useTopGuilds } from '@/shared/hooks/useServer';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '@/shared/lib/api';
 
 interface SocialLink {
   name: string;
@@ -22,6 +25,11 @@ interface Props {
 
 const Community: React.FC<Props> = ({ lang }) => {
   const t = useTranslations(lang);
+  const { data: guilds, isLoading: guildsLoading } = useTopGuilds(3);
+  const { data: events, isLoading: eventsLoading } = useQuery({
+    queryKey: ['events'],
+    queryFn: () => api.get('api/events/?limit=3').json<any[]>(),
+  });
 
   const socials: SocialLink[] = [
     {
@@ -59,7 +67,7 @@ const Community: React.FC<Props> = ({ lang }) => {
     }
   ];
 
-  const upcomingEvents: Event[] = [
+  const upcomingEvents: Event[] = events || [
     {
       title: lang === 'es' ? 'Torneo Liga Cristal' : lang === 'pt' ? 'Torneio Liga Cristal' : 'Crystal League Tournament',
       date: 'Jan 20, 2026',
@@ -167,27 +175,27 @@ const Community: React.FC<Props> = ({ lang }) => {
             <h3 className="text-2xl font-black text-white uppercase italic tracking-wider">{t('community.guilds_title')}</h3>
           </div>
           <div className="grid grid-cols-1 gap-4">
-            {[
-              { name: 'Elite Four', members: 42, points: '1.2M', tag: 'Competitive' },
-              { name: 'Shiny Hunters', members: 156, points: '890k', tag: 'Social' },
-              { name: 'Dragon Slayers', members: 89, points: '750k', tag: 'Raid' }
-            ].map((guild, i) => (
-              <div key={i} className="glass-card p-5 flex items-center justify-between group cursor-pointer hover:border-purple-500/50 transition-all">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center font-black text-xl italic">
-                    {guild.name[0]}
+            {guildsLoading ? (
+              <div className="text-sm text-gray-400">Loading...</div>
+            ) : (
+              guilds?.map((guild, i) => (
+                <div key={i} className="glass-card p-5 flex items-center justify-between group cursor-pointer hover:border-purple-500/50 transition-all">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center font-black text-xl italic">
+                      {guild.name[0]}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white">{guild.name}</h4>
+                      <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">{guild.tag}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-white">{guild.name}</h4>
-                    <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">{guild.tag}</span>
+                  <div className="text-right">
+                    <div className="text-lg font-black text-white">{guild.points}</div>
+                    <div className="text-[10px] text-gray-500 uppercase font-bold">{guild.members} Members</div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-lg font-black text-white">{guild.points}</div>
-                  <div className="text-[10px] text-gray-500 uppercase font-bold">{guild.members} Members</div>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           <button className="w-full py-4 glass-card border-dashed text-gray-400 font-bold uppercase tracking-widest text-sm hover:border-brand-accent/50 hover:text-white transition-all">
             {t('community.view_guilds')}

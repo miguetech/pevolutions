@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
+import Footer from '@/shared/components/navigation/Footer';
+import { PlayerProfileWithProvider } from '../components/PlayerProfileWithProvider';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const name = Astro.url.searchParams.get('name');
+
+if (!name) {
+  return Astro.redirect('/online-players');
+}
+---
+
+<Layout title={`${name} - Player Profile`}>
+  <NavbarWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} />
+  
+  <main class="max-w-5xl mx-auto px-6 py-12">
+    <PlayerProfileWithProvider client:load playerName={name} lang={lang as 'en' | 'es' | 'pt'} />
+  </main>
+
+  <Footer client:visible />
+</Layout>

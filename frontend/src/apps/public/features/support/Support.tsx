@@ -1,4 +1,5 @@
 import { useTranslations } from '@/i18n/utils';
+import { useSupportStaff } from '@/shared/hooks/useServer';
 
 interface SupportMember {
   name: string;
@@ -14,28 +15,18 @@ interface SupportProps {
 
 const Support: React.FC<SupportProps> = ({ lang }) => {
   const t = useTranslations(lang);
+  const { data: staffData, isLoading } = useSupportStaff();
 
-  const members: SupportMember[] = [
+  const members: SupportMember[] = staffData?.map(staff => ({
+    ...staff,
+    avatar: 'https://img.pokemondb.net/sprites/black-white/anim/normal/charizard.gif'
+  })) || [
     {
       name: 'Admin_Sylarnal',
       role: lang === 'en' ? 'Head Administrator' : lang === 'es' ? 'Administrador Principal' : 'Administrador Principal',
       avatar: 'https://img.pokemondb.net/sprites/black-white/anim/normal/charizard.gif',
       availability: '10:00 - 22:00 UTC',
       languages: ['ES', 'EN']
-    },
-    {
-      name: 'MistyTrainer',
-      role: lang === 'en' ? 'Support Moderator' : lang === 'es' ? 'Moderador de Soporte' : 'Moderador de Suporte',
-      avatar: 'https://img.pokemondb.net/sprites/black-white/anim/normal/starmie.gif',
-      availability: '14:00 - 02:00 UTC',
-      languages: ['EN', 'PT']
-    },
-    {
-      name: 'BrockSolid',
-      role: lang === 'en' ? 'Technical Support' : lang === 'es' ? 'Soporte Técnico' : 'Suporte Técnico',
-      avatar: 'https://img.pokemondb.net/sprites/black-white/anim/normal/golem.gif',
-      availability: '08:00 - 18:00 UTC',
-      languages: ['ES', 'PT']
     }
   ];
 

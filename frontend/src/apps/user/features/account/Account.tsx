@@ -122,7 +122,7 @@ const Account: React.FC<Props> = ({ lang }) => {
 
 const DashboardView = ({ user, t }: { user: any, t: any }) => (
   <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-    <AccountStats />
+    <AccountStats t={t} />
     <PlayersList />
   </div>
 );
@@ -193,11 +193,11 @@ const SettingsView = ({ type, t }: { type: 'password' | 'general', t: any }) => 
   <div className="animate-in fade-in slide-in-from-right-4 duration-500">
     {type === 'password' ? (
       <div className="bg-gray-800 rounded-lg p-6">
-        <h3 className="text-xl font-bold mb-4">🔑 Change Password</h3>
-        <ChangePasswordForm onSuccess={() => alert('Password changed successfully!')} />
+        <h3 className="text-xl font-bold mb-4">🔑 {t('account.password_title')}</h3>
+        <ChangePasswordForm onSuccess={() => alert(t('account.password_success'))} />
       </div>
     ) : (
-      <SettingsForm />
+      <SettingsForm t={t} />
     )}
   </div>
 );

@@ -1,6 +1,7 @@
 import React from 'react';
 import DownloadCard from './components/DownloadCard';
 import { useTranslations } from '@/i18n/utils';
+import { useDownloads } from '@/shared/hooks/useServer';
 
 interface Props {
   lang: 'en' | 'es' | 'pt';
@@ -8,6 +9,7 @@ interface Props {
 
 const Downloads: React.FC<Props> = ({ lang }) => {
   const t = useTranslations(lang);
+  const { data: downloads, isLoading } = useDownloads();
 
   const downloadSources = [
     {
@@ -55,9 +57,28 @@ const Downloads: React.FC<Props> = ({ lang }) => {
       </header>
 
       <div className="flex flex-col gap-12 md:grid md:grid-cols-2 lg:grid-cols-3 lg:gap-14">
-        {downloadSources.map((source, index) => (
-          <DownloadCard key={index} {...source} />
-        ))}
+        {isLoading ? (
+          <div className="text-gray-400">Loading...</div>
+        ) : downloads && downloads.length > 0 ? (
+          downloads.map((download, index) => (
+            <DownloadCard 
+              key={index} 
+              name={download.name}
+              description={`${download.platform} - ${download.size}`}
+              url={download.url}
+              icon={
+                <svg className="w-8 h-8 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z" />
+                </svg>
+              }
+              recommended={index === 0}
+            />
+          ))
+        ) : (
+          downloadSources.map((source, index) => (
+            <DownloadCard key={index} {...source} />
+          ))
+        )}
       </div>
 
       <div className="glass-card p-8 border-brand-pokemon-gold/30 mt-12">
