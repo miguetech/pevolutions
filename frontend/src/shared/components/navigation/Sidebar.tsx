@@ -67,7 +67,7 @@ export const LoginBox: React.FC<SidebarProps> = ({ lang }) => {
 
 export const TopPlayers: React.FC<SidebarProps> = ({ lang }) => {
   const t = useTranslations(lang);
-  const { data: players, isLoading } = useTopPlayers(5);
+  const { data: players, isLoading, error } = useTopPlayers(5);
 
   return (
     <SidebarCard 
@@ -80,18 +80,37 @@ export const TopPlayers: React.FC<SidebarProps> = ({ lang }) => {
     >
       <div className="flex flex-col gap-3">
         {isLoading ? (
-          <div className="text-sm text-gray-400">Loading...</div>
+          <div className="space-y-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-8 bg-white/5 rounded animate-pulse"></div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-xs text-red-400 text-center py-2">
+            Failed to load top players
+          </div>
+        ) : !players || players.length === 0 ? (
+          <div className="text-xs text-gray-400 text-center py-2">
+            No players yet
+          </div>
         ) : (
-          players?.map((player, i) => (
-            <div key={i} className="flex items-center justify-between group">
+          players.map((player, i) => (
+            <div key={i} className="flex items-center justify-between group hover:bg-white/5 p-2 rounded-lg transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 text-[10px] text-gray-400 font-bold">
+                <div className={`w-6 h-6 flex items-center justify-center rounded-full text-[10px] font-bold ${
+                  i === 0 ? 'bg-yellow-500/20 text-yellow-500' :
+                  i === 1 ? 'bg-gray-400/20 text-gray-400' :
+                  i === 2 ? 'bg-orange-600/20 text-orange-600' :
+                  'bg-white/5 text-gray-400'
+                }`}>
                   {i + 1}
                 </div>
-                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">{player.name}</span>
+                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
+                  {player.name}
+                </span>
               </div>
-              <div className="flex items-center gap-1">
-                <div className="w-4 h-4 bg-brand-pokemon-gold rounded-full flex items-center justify-center text-[10px] text-brand-bg font-bold animate-pulse">$</div>
+              <div className="flex items-center gap-1 text-xs text-gray-400">
+                <span className="font-bold text-brand-accent">Lv.{player.level}</span>
               </div>
             </div>
           ))
