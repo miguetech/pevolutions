@@ -17,7 +17,7 @@ const t = (key: string) => ui[lang][key] || key;
 				<LoginFormWithProvider client:load />
 				<p class="text-center text-gray-400 mt-6">
 					{t('auth.no_account')}
-					<a href={`/${lang}/register`} class="text-blue-400 hover:text-blue-300 ml-1">{t('auth.register_link')}</a>
+					<a href={lang === 'es' ? '/register' : `/${lang}/register`} class="text-blue-400 hover:text-blue-300 ml-1">{t('auth.register_link')}</a>
 				</p>
 			</div>
 		</div>
