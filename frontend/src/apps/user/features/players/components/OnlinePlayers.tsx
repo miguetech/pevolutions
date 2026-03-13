@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useOnlinePlayers } from '../hooks/usePlayers';
 import { PlayerProfile } from './PlayerProfile';
 import { useDebounce } from '@/shared/hooks/useDebounce';
+import { PlayerCardSkeleton } from '@/shared/components/ui/Skeleton';
+import { EmptyState, ErrorState } from '@/shared/components/ui/States';
 
 export function OnlinePlayers() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'level' | 'captures' | 'fishing_level'>('level');
   const debouncedSearch = useDebounce(searchTerm, 500);
-  const { data: players, isLoading } = useOnlinePlayers({ 
+  const { data: players, isLoading, error, refetch } = useOnlinePlayers({ 
     limit: 50, 
     sort_by: sortBy,
     search: debouncedSearch || undefined
@@ -62,15 +65,44 @@ export function OnlinePlayers() {
       </div>
 
       {isLoading ? (
-        <p className="text-gray-400">Loading...</p>
+        <div className="space-y-4">
+          <PlayerCardSkeleton />
+          <PlayerCardSkeleton />
+          <PlayerCardSkeleton />
+        </div>
+      ) : error ? (
+        <ErrorState
+          message="Failed to load online players. Please try again."
+          onRetry={() => refetch()}
+        />
       ) : !players || players.length === 0 ? (
-        <p className="text-gray-400">No players found</p>
+        <EmptyState
+          icon="🎮"
+          title={searchTerm ? "No players found" : "No players online"}
+          description={searchTerm ? `No results for "${searchTerm}"` : "Be the first to join the adventure!"}
+        />
       ) : (
         <>
-          <div className="space-y-2">
-            {players.map((player) => (
-              <div
+          <motion.div 
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.05 }
+              }
+            }}
+            className="space-y-2"
+          >
+            {players.map((player, index) => (
+              <motion.div
                 key={player.id}
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  show: { opacity: 1, x: 0 }
+                }}
+                whileHover={{ scale: 1.02, x: 4 }}
                 onClick={() => setViewingPlayer(player.name)}
                 className="flex items-center justify-between p-3 bg-gray-700 rounded hover:bg-gray-600 cursor-pointer transition"
               >
@@ -81,13 +113,18 @@ export function OnlinePlayers() {
                 <div className="text-right text-sm">
                   <p className="text-gray-400">Vocation: {player.vocation}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          <p className="text-gray-400 text-sm mt-4">
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-gray-400 text-sm mt-4"
+          >
             Showing {players.length} players
-          </p>
+          </motion.p>
         </>
       )}
     </div>
