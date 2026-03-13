@@ -19,6 +19,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "astro": "^6.0.2",
+    "framer-motion": "^12.36.0",
     "jotai": "^2.18.1",
     "ky": "^1.14.3",
     "react": "^19.2.3",
