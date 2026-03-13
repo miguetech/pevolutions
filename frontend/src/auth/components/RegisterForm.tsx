@@ -3,12 +3,15 @@ import { useMutation } from '@tanstack/react-query';
 import { authAPI } from '../api/authAPI';
 import { useAuth } from '@/auth/hooks/useAuth';
 import { CountrySelector } from '@/shared/components/navigation/CountrySelector';
+import { useTranslations } from '@/i18n/utils';
 
 interface RegisterFormProps {
   onSuccess?: () => void;
+  lang?: 'en' | 'es' | 'pt';
 }
 
-export function RegisterForm({ onSuccess }: RegisterFormProps) {
+export function RegisterForm({ onSuccess, lang = 'es' }: RegisterFormProps) {
+  const t = useTranslations(lang);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,31 +31,31 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     const newErrors: Record<string, string> = {};
     
     if (!name.trim()) {
-      newErrors.name = 'Account name is required';
+      newErrors.name = t('register.name_required');
     }
     
     if (!email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('register.email_required');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Invalid email';
+      newErrors.email = t('register.email_invalid');
     }
     
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('register.password_required');
     } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = t('register.password_min');
     }
     
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = t('register.password_mismatch');
     }
 
     if (!flag) {
-      newErrors.flag = 'Country is required';
+      newErrors.flag = t('register.country_required');
     }
 
     if (!acceptRules) {
-      newErrors.acceptRules = 'You must accept the game rules';
+      newErrors.acceptRules = t('register.rules_required');
     }
     
     setErrors(newErrors);
@@ -71,7 +74,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="name" className="block text-sm font-medium mb-1">
-          Account Name
+          {t('register.account_name')}
         </label>
         <input
           id="name"
@@ -87,7 +90,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       <div>
         <label htmlFor="email" className="block text-sm font-medium mb-1">
-          Email
+          {t('register.email')}
         </label>
         <input
           id="email"
@@ -103,8 +106,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       <div>
         <CountrySelector
-          label="Country"
-          placeholder="Select your country"
+          label={t('form.country')}
+          placeholder={t('form.select_country')}
           value={flag}
           onChange={setFlag}
         />
@@ -115,7 +118,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium mb-1">
-          Password
+          {t('register.password')}
         </label>
         <input
           id="password"
@@ -131,7 +134,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       <div>
         <label htmlFor="confirmPassword" className="block text-sm font-medium mb-1">
-          Confirm Password
+          {t('register.confirm_password')}
         </label>
         <input
           id="confirmPassword"
@@ -154,7 +157,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           className="mt-1"
         />
         <label htmlFor="acceptRules" className="text-sm text-gray-300">
-          I agree to follow the game rules
+          {t('register.accept_rules')}
         </label>
       </div>
       {errors.acceptRules && (
@@ -162,7 +165,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       )}
 
       {registerMutation.error && (
-        <p className="text-red-400 text-sm">Registration failed</p>
+        <p className="text-red-400 text-sm">{t('register.error')}</p>
       )}
 
       <button
@@ -170,7 +173,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         disabled={registerMutation.isPending}
         className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 rounded text-white font-medium"
       >
-        {registerMutation.isPending ? 'Loading...' : 'Register'}
+        {registerMutation.isPending ? t('register.loading') : t('nav.register')}
       </button>
     </form>
   );
