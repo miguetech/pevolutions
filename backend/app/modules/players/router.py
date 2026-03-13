@@ -36,6 +36,14 @@ def get_online_players(
 ):
     return repository.get_online_players(db, sort_by, search, limit)
 
+@router.get("/top", response_model=List[schemas.PlayerOnline])
+def get_top_players(
+    limit: int = 10,
+    db: Session = Depends(get_db)
+):
+    """Get top players by level (all players, not just online)"""
+    return repository.get_top_players(db, limit)
+
 @router.get("/{player_name}", response_model=schemas.PlayerResponse)
 def get_player(player_name: str, db: Session = Depends(get_db)):
     player = repository.get_player_by_name(db, player_name)

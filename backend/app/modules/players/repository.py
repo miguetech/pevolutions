@@ -104,3 +104,24 @@ def get_online_players(db: Session, sort_by: str = "level", search: str = None, 
         })
     
     return result
+
+def get_top_players(db: Session, limit: int = 10):
+    """Get top players by level (all players, not just online)"""
+    players = db.query(models.Player)\
+        .order_by(models.Player.level.desc())\
+        .limit(limit)\
+        .all()
+    
+    result = []
+    for p in players:
+        result.append({
+            "id": p.id,
+            "name": p.name,
+            "level": p.level,
+            "vocation": p.vocation,
+            "sex": p.sex,
+            "captures": int(p.experience / 100),
+            "fishing_level": p.skill_fishing
+        })
+    
+    return result
