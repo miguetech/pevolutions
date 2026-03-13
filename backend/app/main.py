@@ -2,6 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 
+# Importar modelos PRIMERO para que SQLAlchemy los registre
+from .modules.auth.models import Account
+from .modules.players.models import Player, PlayerOnline, PokemonTeam
+from .modules.events.models import Event
+from .modules.guilds.models import Guild, GuildMember
+
 # Importar módulos
 from .modules.auth import router as auth_router
 from .modules.players import router as players_router
