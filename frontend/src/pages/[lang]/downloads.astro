@@ -1,0 +1,12 @@
+---
+import DownloadsPage from '../downloads.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt' } },
+  ];
+}
+---
+
+<DownloadsPage />

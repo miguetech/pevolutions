@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { NavbarWithProvider } from '@/shared/components/navigation/NavbarWithProvider';
+import { CommunityWithProvider } from '@/components/PublicFeaturesWithProvider';
+import Footer from '@/shared/components/navigation/Footer';
+import { ServerInfoWithProvider, TopPlayersWithProvider } from '@/shared/components/navigation/SidebarWithProvider';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<Layout title="Community Hub - PEvolutions">
+	<NavbarWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} />
+	
+	<main class="max-w-7xl mx-auto px-6 py-12">
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+			{/* Right Column: Sidebar (First on mobile) */}
+			<aside class="lg:col-span-4 lg:order-2 flex flex-col gap-y-10">
+				<div><ServerInfoWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} /></div>
+				<div><TopPlayersWithProvider client:visible lang={lang as 'en' | 'es' | 'pt'} /></div>
+			</aside>
+
+			{/* Left Column: Community Content */}
+			<div class="lg:col-span-8 lg:order-1">
+				<CommunityWithProvider client:load lang={lang as 'en' | 'es' | 'pt'} />
+			</div>
+		</div>
+	</main>
+
+	<Footer client:visible />
+</Layout>

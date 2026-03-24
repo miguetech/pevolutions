@@ -1,0 +1,12 @@
+---
+import RegisterPage from '../register.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt' } },
+  ];
+}
+---
+
+<RegisterPage />
