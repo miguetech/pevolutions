@@ -22,9 +22,53 @@ pevolutions/
 
 ---
 
-## 🚀 Inicio Rápido
+## 🐳 Ejecución con Docker (Recomendado)
 
-> ⚠️ Levanta el **backend primero** — el frontend lo requiere para funcionar.
+La forma más rápida de levantar todo el stack (MySQL + FastAPI + Astro/Nginx) sin instalar dependencias manualmente.
+
+### 1. Prerrequisitos de Docker
+Asegúrate de tener Docker instalado y el daemon activo:
+```bash
+# Iniciar daemon de Docker en Linux (si no está activo)
+sudo systemctl start docker
+
+# (Opcional) Habilitar inicio automático con el sistema
+sudo systemctl enable docker
+```
+
+### 2. Levantar el proyecto
+Desde la raíz del repositorio:
+```bash
+# Construir imágenes y levantar en segundo plano
+docker compose up --build -d
+```
+
+### 3. Servicios disponibles
+- **Frontend:** [http://localhost:4321](http://localhost:4321)
+- **Backend API:** [http://localhost:8000](http://localhost:8000)
+- **Swagger Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **MySQL Database:** `localhost:3306` (Base de datos: `pevolutions_db`, Usuario: `pevolutions_user`, Password: `pevolutions_password`)
+
+### 4. Comandos útiles
+```bash
+# Ver logs en tiempo real
+docker compose logs -f
+
+# Ver logs de un servicio específico (ej: backend o frontend)
+docker compose logs -f backend
+
+# Detener todos los contenedores
+docker compose down
+
+# Detener y eliminar volúmenes (reiniciar base de datos desde cero)
+docker compose down -v
+```
+
+---
+
+## 💻 Ejecución Local (Sin Docker)
+
+> ⚠️ Si prefieres correrlo sin Docker, levanta el **backend primero** — el frontend lo requiere para funcionar.
 
 ### 1. Backend
 ```bash

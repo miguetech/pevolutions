@@ -4,8 +4,12 @@ Script para inicializar la base de datos con datos de ejemplo
 """
 import sys
 import time
-from app.database import engine, SessionLocal
-from app.models import Base, Event
+from app.database import engine, SessionLocal, Base
+# Importar todos los modelos para que Base los reconozca al hacer create_all
+from app.modules.auth.models import Account
+from app.modules.players.models import Player, PlayerOnline, PokemonTeam
+from app.modules.events.models import Event
+from app.modules.guilds.models import Guild, GuildMember
 
 def init_db():
     print("🔧 Inicializando base de datos...")
