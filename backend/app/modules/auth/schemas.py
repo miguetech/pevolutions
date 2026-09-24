@@ -17,6 +17,7 @@ class AccountResponse(BaseModel):
     flag: Optional[str] = None
     creation: int
     role: int = 1
+    type: int = 1
 
     class Config:
         from_attributes = True

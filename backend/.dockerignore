@@ -1,0 +1,15 @@
+# Archivos ignorados para el contexto de construcción de Docker
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.env
+.git
+.gitignore
+*.log
+.pytest_cache
+tests/__pycache__

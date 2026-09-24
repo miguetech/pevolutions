@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAtomValue } from 'jotai';
-import { tokenAtom } from '@/auth/stores/authAtoms';
+import { useAtom, useAtomValue } from 'jotai';
+import { tokenAtom, userAtom } from '@/auth/stores/authAtoms';
 import { useTranslations, useLocalizedPath } from '@/i18n/utils';
+import { accountAPI } from '@/apps/user/features/account/api/accountAPI';
 import LanguagePicker from './LanguagePicker';
 import { PlayerSearch } from '../search/PlayerSearch';
 
@@ -14,7 +15,9 @@ const Navbar: React.FC<Props> = ({ lang }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
   const token = useAtomValue(tokenAtom);
+  const [user, setUser] = useAtom(userAtom);
   const isLoggedIn = !!token;
+  const isAdmin = (user as any)?.type >= 4 || (user as any)?.role === 'admin' || (user as any)?.role === 'super_admin';
 
   const t = useTranslations(lang);
   const l = useLocalizedPath(lang);
@@ -29,6 +32,14 @@ const Navbar: React.FC<Props> = ({ lang }) => {
     document.addEventListener('astro:after-navigation', handleNavigation);
     return () => document.removeEventListener('astro:after-navigation', handleNavigation);
   }, []);
+
+  useEffect(() => {
+    if (token && (!user || (user as any).type === undefined)) {
+      accountAPI.getMe().then((me) => {
+        setUser(me as any);
+      }).catch(() => {});
+    }
+  }, [token, user, setUser]);
 
   const navLinks = [
     { name: t('nav.home'), href: l('/') },
@@ -87,6 +98,19 @@ const Navbar: React.FC<Props> = ({ lang }) => {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2 md:gap-4">
+          {/* Admin Direct Access Button (visible only to admin/GM, both mobile & desktop) */}
+          {isAdmin && (
+            <a
+              href="/admin"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all shadow-[0_0_15px_rgba(245,158,11,0.15)]"
+              title="Ir al Panel de Administración"
+            >
+              <span>🛡️</span>
+              <span className="hidden xs:inline sm:inline">Admin Panel</span>
+              <span className="xs:hidden sm:hidden">Admin</span>
+            </a>
+          )}
+
           <div className="hidden md:block">
             <LanguagePicker currentLang={lang} />
           </div>
