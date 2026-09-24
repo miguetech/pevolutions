@@ -12,6 +12,7 @@ class Account(Base):
     creation = Column(BigInteger, nullable=False, default=0)
     premium_ends_at = Column(BigInteger, nullable=False, default=0)
     premium_points = Column(Integer, nullable=True)
+    type = Column(Integer, nullable=False, default=1)
     flag = Column(String(80), nullable=False, default="")
     
     # Relationship with Player - using string reference for lazy loading

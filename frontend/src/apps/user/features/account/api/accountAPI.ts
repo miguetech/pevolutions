@@ -12,6 +12,7 @@ export interface AccountData {
   email?: string;
   flag?: string;
   creation: number;
+  type?: number;
 }
 
 export interface UpdateSettingsRequest {
